@@ -52,7 +52,8 @@ try
     
     // Send email if the code is run on a real server, not localhost.
     if ($_SERVER["HTTP_HOST"] != "localhost") {
-    	mail($sendTo, $subject, $emailText, implode("\n", $headers));
+        //mail($sendTo, $subject, $emailText, implode("\n", $headers));
+        //MAIL IS DISABLD HERE
     }
 
     $responseArray = array('type' => 'success', 'message' => $okMessage);

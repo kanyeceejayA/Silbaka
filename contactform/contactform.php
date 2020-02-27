@@ -1,5 +1,17 @@
 <?php
-include_once('env.php');
+include('env.php');
+
+function url_get_contents ($url) {
+	if (!function_exists('curl_init')){
+		die('CURL is not installed!');
+	}
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$output = curl_exec($ch);
+	curl_close($ch);
+	return $output;
+}
 
 // Build POST request:
 $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
@@ -7,7 +19,7 @@ $recaptcha_secret = env('secret');
 $recaptcha_response = $_POST['recaptcha_response'];
 
 // Make and decode POST request:
-$recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
+$recaptcha = url_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
 $recaptcha = json_decode($recaptcha);
 
 /*
@@ -39,14 +51,14 @@ $errorMessage = 'There was an error while submitting the form. Please try again 
  */
 
 // if you are not debugging and don't need error reporting, turn this off by error_reporting(0);
-// error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 
 try
 {
 
     if(count($_POST) == 0) throw new \Exception('Form is empty');
 
-    if($recaptcha->score <= 0.5) throw new \Exception('Potentially Spam, and the score is '.$recaptcha->score);
+    if($recaptcha->score <= 0.5) throw new \Exception('Potentially Spam, and the score is '.$recaptcha->success);
 
             
     $emailText = "New Message\t Score:".$recaptcha->score."\n";

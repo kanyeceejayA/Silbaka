@@ -46,7 +46,7 @@ try
 
     if(count($_POST) == 0) throw new \Exception('Form is empty');
 
-    if($recaptcha->score <= 0.5) throw new \Exception('Potentially Spam');
+    if($recaptcha->score <= 0.5) throw new \Exception('Potentially Spam, and the score is '.$recaptcha->score);
 
             
     $emailText = "New Message\t Score:".$recaptcha->score."\n";
@@ -75,7 +75,7 @@ try
 }
 catch (\Exception $e)
 {
-    $responseArray = array('type' => 'danger', 'message' => $errorMessage.$e->getMessage().$recaptcha->score);
+    $responseArray = array('type' => 'danger', 'message' => $errorMessage.$e->getMessage());
 }
 
 

@@ -71,11 +71,11 @@ try
         
     }
 
-    $responseArray = array('type' => 'success', 'message' => $okMessage);
+    $responseArray = array('type' => 'success', 'message' => $okMessage.$recaptcha->score);
 }
 catch (\Exception $e)
 {
-    $responseArray = array('type' => 'danger', 'message' => $errorMessage.$e->getMessage());
+    $responseArray = array('type' => 'danger', 'message' => $errorMessage.$e->getMessage().$recaptcha->score);
 }
 
 

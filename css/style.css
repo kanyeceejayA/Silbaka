@@ -872,3 +872,8 @@ section.holder {
     border-color:#383d42;
   }
 }
+
+/* Google Recaptcha Hiding */
+.grecaptcha-badge { 
+  visibility: hidden;
+}

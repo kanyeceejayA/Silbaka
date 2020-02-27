@@ -18,7 +18,7 @@ $(function () {
 
             
             grecaptcha.ready(function () {
-                grecaptcha.execute('6LfBjM0UAAAAAFUUxfGiPsQmRW54vvnqYGy5Z06F', { action: 'contact' }).then(function (token) {
+                grecaptcha.execute('6LfBjM0UAAAAAFUUxfGiPsQmRW54vvnqYGy5Z06F', { action: 'homepage' }).then(function (token) {
                     var recaptchaResponse = document.getElementById('recaptchaResponse');
                     recaptchaResponse.value = token;
                 });

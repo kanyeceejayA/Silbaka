@@ -1,13 +1,24 @@
 <?php
+include_once('env.php');
+
+// Build POST request:
+$recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+$recaptcha_secret = env('secret');
+$recaptcha_response = $_POST['recaptcha_response'];
+
+// Make and decode POST request:
+$recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
+$recaptcha = json_decode($recaptcha);
+
 /*
  *  CONFIGURE EVERYTHING HERE
  */
 
 // an email address that will be in the From field of the email.
-$from = 'Silbaka Contact Form <web@silbaka.com>';
+$from = 'Silbaka Contact Form <site@silbaka.com>';
 
 // an email address that will receive the email with the output of the form
-$sendTo = 'Demo contact form <kakbr800@gmail.com>';
+$sendTo = 'Boss Man<kanye@silbaka.com>';
 
 // subject of the email
 $subject = 'New message from Silbaka:';
@@ -20,21 +31,25 @@ $fields = array('name' => 'Name', 'subject' => 'Subject', 'email' => 'Email', 'm
 $okMessage = 'Contact form successfully submitted. Thank you, we will be in touch soon!';
 
 // If something goes wrong, we will display this message.
-$errorMessage = 'There was an error while submitting the form. Please try again later';
+$errorMessage = 'There was an error while submitting the form. Please try again later. Specifics: ';
+
 
 /*
  *  LET'S DO THE SENDING
  */
 
 // if you are not debugging and don't need error reporting, turn this off by error_reporting(0);
-error_reporting(E_ALL & ~E_NOTICE);
+// error_reporting(E_ALL & ~E_NOTICE);
 
 try
 {
 
     if(count($_POST) == 0) throw new \Exception('Form is empty');
+
+    if($recaptcha->score <= 0.5) throw new \Exception('Potentially Spam');
+
             
-    $emailText = "You have a new message from your contact form\n=============================\n";
+    $emailText = "New Message\t Score:".$recaptcha->score."\n";
 
     foreach ($_POST as $key => $value) {
         // If the field exists in the $fields array, include it in the email 
@@ -52,15 +67,15 @@ try
     
     // Send email if the code is run on a real server, not localhost.
     if ($_SERVER["HTTP_HOST"] != "localhost") {
-        //mail($sendTo, $subject, $emailText, implode("\n", $headers));
-        //MAIL IS DISABLD HERE
+        mail($sendTo, $subject, $emailText, implode("\n", $headers));
+        
     }
 
     $responseArray = array('type' => 'success', 'message' => $okMessage);
 }
 catch (\Exception $e)
 {
-    $responseArray = array('type' => 'danger', 'message' => $errorMessage);
+    $responseArray = array('type' => 'danger', 'message' => $errorMessage.$e->getMessage());
 }
 
 

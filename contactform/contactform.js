@@ -7,11 +7,24 @@ $(function () {
     // $('#contact-form').validator();
 
 
+
+
     // when the form is submitted
     $('#contact-form').on('submit', function (e) {
+        
 
         // if the validator does not prevent form submit
         if (!e.isDefaultPrevented()) {
+
+            
+            grecaptcha.ready(function () {
+                grecaptcha.execute('6LfBjM0UAAAAAFUUxfGiPsQmRW54vvnqYGy5Z06F', { action: 'contact' }).then(function (token) {
+                    var recaptchaResponse = document.getElementById('recaptchaResponse');
+                    recaptchaResponse.value = token;
+                });
+            });
+            
+
             var url = "contactform/contactform.php";
 
             // POST values in the background the the script URL

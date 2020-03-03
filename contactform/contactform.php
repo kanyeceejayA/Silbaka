@@ -33,7 +33,7 @@ $from = 'Silbaka Contact Form <site@silbaka.com>';
 $sendTo = 'Boss Man<kanye@silbaka.com>';
 
 // subject of the email
-$subject = 'New message from Silbaka: '.$_POST['subject'];
+$subject = 'New message from Silbaka:';
 
 // form field names and their translations.
 // array variable name => Text to appear in the email

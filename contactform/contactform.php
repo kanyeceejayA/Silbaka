@@ -18,6 +18,7 @@ $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
 $recaptcha_secret = env('secret');
 $recaptcha_response = $_POST['recaptcha_response'];
 
+//SWITCH THIS TO FILE_GET_CONTENTS IF ON LOCALHOST!!!
 // Make and decode POST request:
 $recaptcha = url_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
 $recaptcha = json_decode($recaptcha);
@@ -33,7 +34,7 @@ $from = 'Silbaka Contact Form <site@silbaka.com>';
 $sendTo = 'Boss Man<kanye@silbaka.com>';
 
 // subject of the email
-$subject = 'New message from Silbaka:';
+$subject = 'New message from Silbaka: '.$_POST['subject'];
 
 // form field names and their translations.
 // array variable name => Text to appear in the email
@@ -58,7 +59,7 @@ try
 
     if(count($_POST) == 0) throw new \Exception('Form is empty');
 
-    if($recaptcha->score <= 0.5) throw new \Exception('Potentially Spam <br><br>score:'.$recaptcha.'<br><br> token: '.$recaptcha_response);
+    if($recaptcha->score <= 0.5) throw new \Exception('Potentially Spam ');
 
             
     $emailText = "New Message\t Score:".$recaptcha->score."\n";

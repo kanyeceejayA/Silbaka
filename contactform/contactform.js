@@ -18,7 +18,7 @@ $(function () {
 
             
             grecaptcha.ready(function () {
-                grecaptcha.execute('6LfBjM0UAAAAAFUUxfGiPsQmRW54vvnqYGy5Z06F', { action: 'homepage' }).then(function (token) {
+                grecaptcha.execute('6LfBjM0UAAAAAFUUxfGiPsQmRW54vvnqYGy5Z06F', { action: 'contact' }).then(function (token) {
                     var recaptchaResponse = document.getElementById('recaptchaResponse');
                     recaptchaResponse.value = token;
                 });
@@ -49,9 +49,11 @@ $(function () {
                         // $('#contact-form').find('.messages').html(alertBox);
                         document.getElementById("messages").innerHTML = alertBox;
                         // alert(alertBox);
-                        
+
                         // empty the form
-                        $('#contact-form')[0].reset();
+                        // if(data.type == 'success'){
+                        //     $('#contact-form')[0].reset();
+                        // }
                     }
                 }
             });

@@ -51,9 +51,7 @@ $(function () {
                         // alert(alertBox);
                         
                         // empty the form
-                        if(data.type == 'success'){
-                            $('#contact-form')[0].reset();
-                        }
+                        $('#contact-form')[0].reset();
                     }
                 }
             });

@@ -13,56 +13,52 @@ function url_get_contents ($url) {
 	return $output;
 }
 
+// Build POST request:
+$recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+$recaptcha_secret = env('secret');
+$recaptcha_response = $_POST['recaptcha_response'];
+
+// Make and decode POST request:
+$recaptcha = url_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
+$recaptcha = json_decode($recaptcha);
+
+/*
+ *  CONFIGURE EVERYTHING HERE
+ */
+
+// an email address that will be in the From field of the email.
+$from = 'Silbaka Contact Form <site@silbaka.com>';
+
+// an email address that will receive the email with the output of the form
+$sendTo = 'Boss Man<kanye@silbaka.com>';
+
+// subject of the email
+$subject = 'New message from Silbaka: '.$_POST['subject'];
+
+// form field names and their translations.
+// array variable name => Text to appear in the email
+$fields = array('name' => 'Name', 'subject' => 'Subject', 'email' => 'Email', 'message' => 'Message'); 
+
+// message that will be displayed when everything is OK :)
+$okMessage = 'Contact form successfully submitted. Thank you, we will be in touch soon!';
+
+// If something goes wrong, we will display this message.
+$errorMessage = 'There was an error while submitting the form. Please try again later. Specifics: ';
+
+
+/*
+ *  LET'S DO THE SENDING
+ */
+
+// if you are not debugging and don't need error reporting, turn this off by error_reporting(0);
+error_reporting(E_ALL & ~E_NOTICE);
 
 try
 {
 
     if(count($_POST) == 0) throw new \Exception('Form is empty');
 
-    // Build POST request:
-    $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
-    $recaptcha_secret = env('secret');
-    $recaptcha_response = $_POST['recaptcha_response'];
-
-    // Make and decode POST request:
-    $recaptcha = url_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
-    $recaptcha = json_decode($recaptcha);
-    
-
-    /*
-    *  CONFIGURE EVERYTHING HERE
-    */
-
-    // an email address that will be in the From field of the email.
-    $from = 'Silbaka Contact Form <silbaka@hosting.rtl.ug>';
-
-    // an email address that will receive the email with the output of the form
-    $sendTo = 'Boss Man<kanye@silbaka.com>';
-
-    // subject of the email
-    $subject = 'New message from Silbaka: '.$_POST['subject'];
-
-    // form field names and their translations.
-    // array variable name => Text to appear in the email
-    $fields = array('name' => 'Name', 'subject' => 'Subject', 'email' => 'Email', 'message' => 'Message'); 
-
-    // message that will be displayed when everything is OK :)
-    $okMessage = 'Contact form successfully submitted. Thank you, we will be in touch soon!';
-
-    // If something goes wrong, we will display this message.
-    $errorMessage = 'There was an error while submitting the form. Please try Submitting again. Code: ';
-
-
-    /*
-    *  LET'S DO THE SENDING
-    */
-
-    // if you are not debugging and don't need error reporting, turn this off by error_reporting(0);
-    // error_reporting(E_ALL & ~E_NOTICE);
-
-
-
-    if($recaptcha->score <= 0.5) throw new \Exception('SPA-'.$recaptcha->score);
+    if($recaptcha->score <= 0.5) throw new \Exception('Potentially Spam ');
 
             
     $emailText = "New Message\t Score:".$recaptcha->score."\n";

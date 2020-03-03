@@ -44,7 +44,7 @@ $fields = array('name' => 'Name', 'subject' => 'Subject', 'email' => 'Email', 'm
 $okMessage = 'Contact form successfully submitted. Thank you, we will be in touch soon!';
 
 // If something goes wrong, we will display this message.
-$errorMessage = 'There was an error while submitting the form. Please try again later. Specifics: ';
+$errorMessage = 'Sorry, an error occured. Please try submitting again. Error Code: ';
 
 
 /*
@@ -57,9 +57,9 @@ error_reporting(E_ALL & ~E_NOTICE);
 try
 {
 
-    if(count($_POST) == 0) throw new \Exception('Form is empty');
+    if(count($_POST) == 0) throw new \Exception('3MPT-Y34');
 
-    if($recaptcha->score <= 0.5) throw new \Exception('Potentially Spam ');
+    if($recaptcha->score <= 0.5) throw new \Exception('SP-M45'.$recaptcha->score);
 
             
     $emailText = "New Message\t Score:".$recaptcha->score."\n";

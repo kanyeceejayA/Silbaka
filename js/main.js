@@ -86,3 +86,32 @@
 
 
 })(jQuery);
+
+function toggleDark() {
+  var element = document.body;
+  element.classList.toggle("dark-mode");
+}
+
+document.querySelector(".tdnn").addEventListener('click', (e) => {
+  $("body").toggleClass('dark-mode');
+  $(".moon").toggleClass('sun');
+  $(".tdnn").toggleClass('day');
+  if(localStorage.getItem("darkmode") == 'on'){
+    localStorage.setItem('darkmode', 'off');
+  }else{
+    localStorage.setItem('darkmode', 'on');
+  }
+});
+
+
+window.addEventListener('load', ()=>{
+  if(localStorage.getItem("darkmode") == 'on'){
+    document.querySelector("body").addClass('dark-mode');
+    document.querySelector(".moon").removeClass('sun');
+    document.querySelector(".tdnn").removeClass('day');
+    // $(".moon").toggleClass('sun');
+    // $(".tdnn").addClass('day');
+  }else{
+    
+  }
+});

@@ -1,3 +1,15 @@
+window.addEventListener('load', ()=>{
+  if(localStorage.getItem("darkmode") == 'on'){
+    document.querySelector("body").addClass('dark-mode');
+    document.querySelector(".moon").removeClass('sun');
+    document.querySelector(".tdnn").removeClass('day');
+    // $(".moon").toggleClass('sun');
+    // $(".tdnn").addClass('day');
+  }else{
+    
+  }
+});
+
 (function ($) {
   "use strict";
 
@@ -104,14 +116,3 @@ document.querySelector(".tdnn").addEventListener('click', (e) => {
 });
 
 
-window.addEventListener('load', ()=>{
-  if(localStorage.getItem("darkmode") == 'on'){
-    document.querySelector("body").addClass('dark-mode');
-    document.querySelector(".moon").removeClass('sun');
-    document.querySelector(".tdnn").removeClass('day');
-    // $(".moon").toggleClass('sun');
-    // $(".tdnn").addClass('day');
-  }else{
-    
-  }
-});
